@@ -10,6 +10,7 @@ import { createMetisAgent, metisPromptMetadata } from "./metis"
 import { createAtlasAgent, atlasPromptMetadata } from "./atlas"
 import { createMomusAgent, momusPromptMetadata } from "./momus"
 import { createHephaestusAgent } from "./hephaestus"
+import { createCodeReviewerAgent, CODE_REVIEWER_PROMPT_METADATA } from "./code-reviewer"
 import type { AvailableAgent, AvailableCategory, AvailableSkill } from "./dynamic-agent-prompt-builder"
 import { deepMerge, fetchAvailableModels, resolveModelPipeline, AGENT_MODEL_REQUIREMENTS, readConnectedProvidersCache, isModelAvailable, isAnyFallbackModelAvailable, isAnyProviderConnected, migrateAgentConfig } from "../shared"
 import { DEFAULT_CATEGORIES, CATEGORY_DESCRIPTIONS } from "../tools/delegate-task/constants"
@@ -32,6 +33,7 @@ const agentSources: Record<BuiltinAgentName, AgentSource> = {
   // Note: Atlas is handled specially in createBuiltinAgents()
   // because it needs OrchestratorContext, not just a model string
   atlas: createAtlasAgent as unknown as AgentFactory,
+  "code-reviewer": createCodeReviewerAgent,
 }
 
 /**
@@ -46,6 +48,7 @@ const agentMetadata: Partial<Record<BuiltinAgentName, AgentPromptMetadata>> = {
   metis: metisPromptMetadata,
   momus: momusPromptMetadata,
   atlas: atlasPromptMetadata,
+  "code-reviewer": CODE_REVIEWER_PROMPT_METADATA,
 }
 
 function isFactory(source: AgentSource): source is AgentFactory {
