@@ -120,14 +120,14 @@ This is an **international open-source project**. To ensure accessibility and ma
 
 ## OVERVIEW
 
-OpenCode plugin: multi-model agent orchestration (Claude Opus 4.6, GPT-5.3 Codex, Gemini 3 Flash). 40+ lifecycle hooks, 25+ tools (LSP, AST-Grep, delegation), 11 specialized agents, full Claude Code compatibility. "oh-my-zsh" for OpenCode.
+OpenCode plugin: multi-model agent orchestration (Claude Opus 4.6, GPT-5.3 Codex, Gemini 3 Flash). 40+ lifecycle hooks, 25+ tools (LSP, AST-Grep, delegation), 12 specialized agents, full Claude Code compatibility. "oh-my-zsh" for OpenCode.
 
 ## STRUCTURE
 
 ```
 oh-my-opencode/
 ├── src/
-│   ├── agents/           # 11 AI agents - see src/agents/AGENTS.md
+│   ├── agents/           # 12 AI agents - see src/agents/AGENTS.md
 │   ├── hooks/            # 40+ lifecycle hooks - see src/hooks/AGENTS.md
 │   ├── tools/            # 25+ tools - see src/tools/AGENTS.md
 │   ├── features/         # Background agents, skills, Claude Code compat - see src/features/AGENTS.md
@@ -219,6 +219,7 @@ oh-my-opencode/
 | Prometheus | anthropic/claude-opus-4-6 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
 | Metis | anthropic/claude-opus-4-6 | Pre-planning analysis (temp 0.3, fallback: kimi-k2.5 → gpt-5.2) |
 | Momus | openai/gpt-5.2 | Plan validation (temp 0.1, fallback: claude-opus-4-6) |
+| code-reviewer | openai/gpt-5.2 | Post-implementation code review (temp 0.1, fallback: claude-opus-4-6) |
 | Sisyphus-Junior | anthropic/claude-sonnet-4-5 | Category-spawned executor (temp 0.1) |
 
 ## COMMANDS
