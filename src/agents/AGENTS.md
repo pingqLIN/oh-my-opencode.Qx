@@ -2,13 +2,13 @@
 
 ## OVERVIEW
 
-11 AI agents for multi-model orchestration. Each agent has factory function + metadata + fallback chains.
+12 AI agents for multi-model orchestration. Each agent has factory function + metadata + fallback chains.
 
 **Primary Agents** (respect UI model selection):
 - Sisyphus, Atlas, Prometheus
 
 **Subagents** (use own fallback chains):
-- Hephaestus, Oracle, Librarian, Explore, Multimodal-Looker, Metis, Momus, Sisyphus-Junior
+- Hephaestus, Oracle, Librarian, Explore, Multimodal-Looker, Metis, Momus, Code-Reviewer, Sisyphus-Junior
 
 ## STRUCTURE
 ```
@@ -38,6 +38,7 @@ agents/
 ├── multimodal-looker.ts        # Media analyzer (Gemini 3 Flash)
 ├── metis.ts                    # Pre-planning analysis (347 lines)
 ├── momus.ts                    # Plan reviewer
+├── code-reviewer.ts            # Post-implementation code reviewer (NEW)
 ├── dynamic-agent-prompt-builder.ts  # Dynamic prompt generation (431 lines)
 ├── types.ts                    # AgentModelConfig, AgentPromptMetadata
 ├── utils.ts                    # createBuiltinAgents(), resolveModelWithFallback() (485 lines)
@@ -57,6 +58,7 @@ agents/
 | Prometheus | anthropic/claude-opus-4-6 | 0.1 | Strategic planning (fallback: kimi-k2.5 → gpt-5.2) |
 | Metis | anthropic/claude-opus-4-6 | 0.3 | Pre-planning analysis (fallback: kimi-k2.5 → gpt-5.2) |
 | Momus | openai/gpt-5.2 | 0.1 | Plan validation (fallback: claude-opus-4-6) |
+| code-reviewer | openai/gpt-5.2 | 0.1 | Post-implementation code review (fallback: claude-opus-4-6) |
 | Sisyphus-Junior | anthropic/claude-sonnet-4-5 | 0.1 | Category-spawned executor |
 
 ## HOW TO ADD
@@ -72,6 +74,7 @@ agents/
 | librarian | write, edit, task, task, call_omo_agent |
 | explore | write, edit, task, task, call_omo_agent |
 | multimodal-looker | Allowlist: read only |
+| code-reviewer | write, edit, task, call_omo_agent |
 | Sisyphus-Junior | task, task |
 | Atlas | task, call_omo_agent |
 
@@ -87,3 +90,26 @@ agents/
 - **High temp**: Don't use >0.3 for code agents
 - **Sequential calls**: Use `task` with `run_in_background` for exploration
 - **Prometheus writing code**: Planner only - never implements
+
+## CODE-REVIEWER USAGE
+
+### When to Use
+After major implementation steps, use code-reviewer to validate:
+- Plan adherence
+- Code quality and patterns
+- Security vulnerabilities
+- Architecture compliance (SOLID)
+- Test coverage
+
+### Two-Phase Review
+1. **Gate Check** (blocking): References valid, no critical security issues, core requirements met
+2. **Quality Assessment** (advisory): Code quality, architecture, performance, tests
+
+### Output Format
+Structured with severity classification:
+- **CRITICAL**: Must fix before merge
+- **IMPORTANT**: Should fix (tech debt)
+- **SUGGESTIONS**: Nice to have
+
+Always includes "What Was Done Well" for constructive feedback.
+
